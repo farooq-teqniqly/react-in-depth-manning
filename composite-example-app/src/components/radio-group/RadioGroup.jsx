@@ -1,8 +1,6 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import PropTypes from "prop-types";
-import {RadioGroupContext} from "./contexts.js";
-import {Option} from "./Option.jsx";
-import {Details} from "./Details.jsx";
+import {RadioGroupContext, RadioOptionContext} from "./contexts.js";
 
 export const RadioGroup = ({name, onChange, children}) => {
     const [selectedValue, setSelectedValue] = useState("");
@@ -38,6 +36,39 @@ RadioGroup.propTypes = {
     children: PropTypes.node.isRequired,
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func
+};
+
+const Option = ({value, icon, isPopular, children}) => {
+    const {name, selectedValue, onChange} = useContext(RadioGroupContext);
+
+    const isSelected = selectedValue === value;
+
+    return (
+        <label style={isPopular ? {border: "1px dashed red"} : null}>
+            {icon}
+            <input type="radio" value={value} name={name} checked={isSelected} onChange={() => onChange(value)}/>
+            <RadioOptionContext.Provider value={isSelected}>
+                {children}
+            </RadioOptionContext.Provider>
+        </label>
+    )
+}
+
+Option.propTypes = {
+    value: PropTypes.string.isRequired,
+    icon: PropTypes.string,
+    isPopular: PropTypes.bool,
+    children: PropTypes.node.isRequired,
+};
+
+const Details = ({children}) => {
+    const isSelected = useContext(RadioOptionContext);
+
+    return isSelected ? children : null;
+}
+
+Details.propTypes = {
+    children: PropTypes.node.isRequired
 };
 
 RadioGroup.Option = Option;
