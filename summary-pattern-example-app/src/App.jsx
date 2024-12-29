@@ -1,11 +1,11 @@
 import './App.css'
-import {LongTaskManager} from "./LongTaskManager";
+import {CompactTaskManager} from "./CompactTaskManager";
 
 function App() {
 
 
   return (
-        <LongTaskManager></LongTaskManager>
+        <CompactTaskManager></CompactTaskManager>
   )
 }
 
